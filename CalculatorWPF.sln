@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorWPF", "CalculatorWPF.csproj", "{28C851E5-B488-4AF9-9255-AE9A5A40EF64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorWPF", "CalculatorWPF.csproj", "{CEDCB003-7805-4D40-93F7-8D43B0682465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28C851E5-B488-4AF9-9255-AE9A5A40EF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28C851E5-B488-4AF9-9255-AE9A5A40EF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28C851E5-B488-4AF9-9255-AE9A5A40EF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28C851E5-B488-4AF9-9255-AE9A5A40EF64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEDCB003-7805-4D40-93F7-8D43B0682465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEDCB003-7805-4D40-93F7-8D43B0682465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEDCB003-7805-4D40-93F7-8D43B0682465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEDCB003-7805-4D40-93F7-8D43B0682465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8B200952-8C5F-4C34-A4A4-359848B428DE}
+		SolutionGuid = {92BBF2C4-FF64-4414-A51A-3D2BA793F689}
 	EndGlobalSection
 EndGlobal

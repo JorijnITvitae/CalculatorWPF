@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace CalculatorWPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -25,7 +22,7 @@ namespace CalculatorWPF
             InitializeComponent();
         }
 
-        private void Button_Number_Click(object sender, RoutedEventArgs e)
+        private void Button_Item_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)(sender);
             var content = button.Content;
