@@ -17,9 +17,12 @@ namespace CalculatorWPF
 {
     public partial class MainWindow : Window
     {
+        private Calculator calculator;
+
         public MainWindow()
         {
             InitializeComponent();
+            calculator = new Calculator();
         }
 
         private void Button_Item_Click(object sender, RoutedEventArgs e)
@@ -27,6 +30,27 @@ namespace CalculatorWPF
             var button = (Button)(sender);
             var content = button.Content;
             TextBox_Input.Text += content.ToString();
+        }
+
+        private void Button_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            TextBox_Input.Clear();
+            TextBox_Output.Clear();
+        }
+
+        private void Solve()
+        {
+            TextBox_Output.Text = calculator.Solve(TextBox_Input.Text);
+        }
+
+        private void Button_Equals_Click(object sender, RoutedEventArgs e)
+        {
+            Solve();
+        }
+
+        private void TextBox_Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) Solve();
         }
     }
 }

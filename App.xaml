@@ -9,7 +9,7 @@
         <Style TargetType="Button">
             <Setter Property="Margin" Value="4" />
             <Setter Property="Background" Value="#2f2f2f" />
-            <Setter Property="Foreground" Value="#dfdfdf" />
+            <Setter Property="Foreground" Value="#bfbfbf" />
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
