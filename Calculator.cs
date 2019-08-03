@@ -75,22 +75,14 @@ namespace CalculatorWPF
             }
         }
 
-        private enum ErrorType
-        {
-            SUCCESS,
-            SYNTAX_ERROR,
-            ROOT_OF_NEGATIVE,
-            UNKNOWN,
-        }
-
         private class ItemList
         {
-            public ErrorType error;
+            public string error;
             public List<Item> items;
 
             public ItemList()
             {
-                error = ErrorType.UNKNOWN;
+                error = "unknown error";
                 items = new List<Item>();
             }
 
@@ -156,7 +148,7 @@ namespace CalculatorWPF
                         {
                             if (items[i + 1].type == ItemType.NUMBER)
                             {
-                                itemList.error = ErrorType.SYNTAX_ERROR;
+                                itemList.error = "syntax error";
                                 return;
                             }
                         }
@@ -182,7 +174,7 @@ namespace CalculatorWPF
             }
 
             // Computed successfully.
-            itemList.error = ErrorType.SUCCESS;
+            itemList.error = "success";
         }
 
         // Clean up consecutive use of plus/minus, and find syntax errors.
@@ -247,7 +239,7 @@ namespace CalculatorWPF
             if (items[0].type > ItemType.ADD)
             {
                 // You can't put one of these operators with nothing in front.
-                itemList.error = ErrorType.SYNTAX_ERROR;
+                itemList.error = "syntax error";
             }
             else if (items[0].type > ItemType.NUMBER)
             {
@@ -296,16 +288,40 @@ namespace CalculatorWPF
                 {
                     if (items[i + 1].type > ItemType.NUMBER)
                     {
-                        itemList.error = ErrorType.SYNTAX_ERROR;
+                        itemList.error = "syntax error";
                     }
                 }
+            }
+
+            // Fifth, interpret two numbers in a row as multiplication.
+            while (true)
+            {
+                bool cleaned = true;
+
+                // Not doing the last item in the list because we're already comparing it on the previous one.
+                for (int i = 0; i < items.Count - 2; i++)
+                {
+                    if (items[i].type <= ItemType.NUMBER)
+                    {
+                        if (items[i + 1].type <= ItemType.NUMBER)
+                        {
+                            // Insert multiply operation in between the numbers.
+                            items.Insert(i + 1, new Item(ItemType.MULTIPLY));
+                            cleaned = false;
+                            break;
+                        }
+                    }
+                }
+
+                // If we made it through the whole list without finding any issues, we can stop checking.
+                if (cleaned) break;
             }
 
             // Remove the padding item again.
             items.RemoveAt(items.Count - 1);
 
             // Cleaned up successfully.
-            itemList.error = ErrorType.SUCCESS;
+            itemList.error = "success";
         }
 
         // Turn the equasion into smaller ones for the sets of brackets and solve them.
@@ -353,12 +369,12 @@ namespace CalculatorWPF
                     // Then clean and compute that.
                     CleanSyntax(tempList);
 
-                    if (tempList.error != ErrorType.SUCCESS)
+                    if (tempList.error != "success")
                         return; // Exit because there's an error.
 
                     Compute(tempList);
 
-                    if (tempList.error != ErrorType.SUCCESS)
+                    if (tempList.error != "success")
                         return; // Exit because there's an error.
 
                     // Finally remove the solved items and brackets.
@@ -372,12 +388,12 @@ namespace CalculatorWPF
                 {
                     CleanSyntax(itemList);
 
-                    if (itemList.error != ErrorType.SUCCESS)
+                    if (itemList.error != "success")
                         return; // Exit because there's an error.
 
                     Compute(itemList);
 
-                    if (itemList.error != ErrorType.SUCCESS)
+                    if (itemList.error != "success")
                         return; // Exit because there's an error.
 
                     return; // Exit because we're done.
@@ -386,7 +402,7 @@ namespace CalculatorWPF
                 // We can only find one of the brackets necessary for a pair.
                 else
                 {
-                    itemList.error = ErrorType.SYNTAX_ERROR;
+                    itemList.error = "syntax error";
                     return; // Exit because there's an error.
                 }
             }
@@ -418,8 +434,18 @@ namespace CalculatorWPF
                 // If we reached the end of this number on the previous character, add the number to the list of items and clear the temporary string.
                 else if (numberString.Length != 0)
                 {
+                    double number;
+
                     // Convert the temporary string into a number.
-                    double number = double.Parse(numberString, CultureInfo.InvariantCulture.NumberFormat);
+                    try
+                    {
+                        number = double.Parse(numberString, CultureInfo.InvariantCulture.NumberFormat);
+                    }
+                    catch (FormatException)
+                    {
+                        itemList.error = "syntax error";
+                        return itemList;
+                    }
 
                     // Add the number to the list of items.
                     Item item = new Item(number);
@@ -479,9 +505,9 @@ namespace CalculatorWPF
 
             // If the list is empty, assume it's a syntax error.
             if (items.Count < 1)
-                itemList.error = ErrorType.SYNTAX_ERROR;
+                itemList.error = "syntax error";
             else
-                itemList.error = ErrorType.SUCCESS;
+                itemList.error = "success";
 
             // Interpreted successfully.
             return itemList;
@@ -494,27 +520,17 @@ namespace CalculatorWPF
             ItemList itemList = Interpret(input);
 
             // If there was an error interpreting the input, let the user know.
-            switch (itemList.error)
+            if (itemList.error != "success")
             {
-                case ErrorType.SYNTAX_ERROR:
-                    return "SYNTAX ERROR";
-                case ErrorType.ROOT_OF_NEGATIVE:
-                    return "ROOT OF NEGATIVE ERROR";
-                case ErrorType.UNKNOWN:
-                    return "UNKNOWN ERROR";
+                return itemList.error;
             }
 
             HandleBrackets(itemList);
 
             // If there was an error anywhere else, let the user know.
-            switch (itemList.error)
+            if (itemList.error != "success")
             {
-                case ErrorType.SYNTAX_ERROR:
-                    return "SYNTAX ERROR";
-                case ErrorType.ROOT_OF_NEGATIVE:
-                    return "ROOT OF NEGATIVE ERROR";
-                case ErrorType.UNKNOWN:
-                    return "UNKNOWN ERROR";
+                return itemList.error;
             }
 
             // Return the answer.
