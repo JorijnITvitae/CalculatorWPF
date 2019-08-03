@@ -113,9 +113,9 @@ namespace CalculatorWPF
             // Keep repeating these steps until the list of items has been simplified to one.
             while (items.Count > 1)
             {
-                // Temporary variable to store the highest in the math hiearchy we've found.
+                // Temporary variable to store the highest in the math hierarchy we've found.
                 // 0 = number, answer; 1 = add, subtract; 2 = multiply, divide; 3 = power, root.
-                int highestHiearchy = -1;
+                int highesthierarchy = -1;
 
                 // Temporary variable to store the position of the action to be executed in the list.
                 int itemPosition = -1;
@@ -123,21 +123,21 @@ namespace CalculatorWPF
                 // For every item still in the list, act based on what type it is.
                 for (int i = 0; i < items.Count; i++)
                 {
-                    // If this item is already the highest in the math hiearchy, don't bother checking the rest of the list.
-                    if (highestHiearchy == 3) break;
+                    // If this item is already the highest in the math hierarchy, don't bother checking the rest of the list.
+                    if (highesthierarchy == 3) break;
 
                     // Temporary variable to store the place of this item in the math hieachy.
-                    int hiearchy = 0;
+                    int hierarchy = 0;
 
                     // This makes sure that items that should be of equal value are treated equally.
-                    if (items[i].type == ItemType.ADD || items[i].type == ItemType.SUBTRACT) hiearchy = 1;
-                    else if (items[i].type == ItemType.MULTIPLY || items[i].type == ItemType.DIVIDE) hiearchy = 2;
-                    else if (items[i].type == ItemType.POWER || items[i].type == ItemType.ROOT) hiearchy = 3;
+                    if (items[i].type == ItemType.ADD || items[i].type == ItemType.SUBTRACT) hierarchy = 1;
+                    else if (items[i].type == ItemType.MULTIPLY || items[i].type == ItemType.DIVIDE) hierarchy = 2;
+                    else if (items[i].type == ItemType.POWER || items[i].type == ItemType.ROOT) hierarchy = 3;
 
-                    // If this item is higher in the math hiearchy, make it the new highest action.
-                    if (hiearchy > highestHiearchy)
+                    // If this item is higher in the math hierarchy, make it the new highest action.
+                    if (hierarchy > highesthierarchy)
                     {
-                        highestHiearchy = hiearchy;
+                        highesthierarchy = hierarchy;
                         itemPosition = i;
                     }
 

@@ -6,14 +6,24 @@
         xmlns:local="clr-namespace:CalculatorWPF"
         mc:Ignorable="d"
         Width="250" MinWidth="300" MaxWidth="600"
-        Height="375" MinHeight="375" MaxHeight="375"
+        Height="421" MinHeight="421" MaxHeight="421"
         Title="Calculator">
 
     <Border Padding="8" Background="#3f3f3f">
 
-        <StackPanel Margin="0 2 0 0">
+        <StackPanel Margin="0 -2 0 0">
 
-            <TextBox x:Name="TextBox_Output" Margin="0 0 0 4" IsReadOnly="True" FontSize="32" Padding="4" Background="#2f2f2f" Foreground="#efefef" />
+            <Grid Margin="-4 0 -4 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="TextBox_Answer" Grid.Column="0" Margin="4" IsReadOnly="True" FontSize="24" Padding="2" Background="#2f2f2f" Foreground="#efefef" />
+                <TextBox x:Name="TextBox_Memory" Grid.Column="1" Margin="4" IsReadOnly="True" FontSize="24" Padding="2" Background="#2f2f2f" Foreground="#efefef" />
+            </Grid>
+
+            <TextBox x:Name="TextBox_Output" Margin="0 4 0 4" IsReadOnly="True" FontSize="32" Padding="4" Background="#2f2f2f" Foreground="#efefef" />
 
             <TextBox x:Name="TextBox_Input" Margin="0 4 0 4" FontSize="24" Padding="2" Background="#1f1f1f" Foreground="#dfdfdf" KeyDown="TextBox_Input_KeyDown" />
 
