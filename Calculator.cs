@@ -9,6 +9,16 @@ namespace CalculatorWPF
         private double answer;
         private double memory;
 
+        public double Answer
+        {
+            get => answer;
+        }
+
+        public double Memory
+        {
+            get => memory;
+        }
+
         private enum ItemType
         {
             NULL,
@@ -115,7 +125,7 @@ namespace CalculatorWPF
             {
                 // Temporary variable to store the highest in the math hierarchy we've found.
                 // 0 = number, answer; 1 = add, subtract; 2 = multiply, divide; 3 = power, root.
-                int highesthierarchy = -1;
+                int highestHierarchy = -1;
 
                 // Temporary variable to store the position of the action to be executed in the list.
                 int itemPosition = -1;
@@ -124,7 +134,7 @@ namespace CalculatorWPF
                 for (int i = 0; i < items.Count; i++)
                 {
                     // If this item is already the highest in the math hierarchy, don't bother checking the rest of the list.
-                    if (highesthierarchy == 3) break;
+                    if (highestHierarchy == 3) break;
 
                     // Temporary variable to store the place of this item in the math hieachy.
                     int hierarchy = 0;
@@ -135,9 +145,9 @@ namespace CalculatorWPF
                     else if (items[i].type == ItemType.POWER || items[i].type == ItemType.ROOT) hierarchy = 3;
 
                     // If this item is higher in the math hierarchy, make it the new highest action.
-                    if (hierarchy > highesthierarchy)
+                    if (hierarchy > highestHierarchy)
                     {
-                        highesthierarchy = hierarchy;
+                        highestHierarchy = hierarchy;
                         itemPosition = i;
                     }
 
@@ -180,6 +190,9 @@ namespace CalculatorWPF
         // Clean up consecutive use of plus/minus, and find syntax errors.
         private void CleanSyntax(ItemList itemList)
         {
+            // Assume the syntax is perfect, then change this when errors are found.
+            itemList.error = "success";
+
             // Reference variable for convenience.
             List<Item> items = itemList.items;
 
@@ -235,19 +248,7 @@ namespace CalculatorWPF
                 if (cleaned) break;
             }
 
-            // Second, let's make sure an operation at the start isn't going to break the whole thing.
-            if (items[0].type > ItemType.ADD)
-            {
-                // You can't put one of these operators with nothing in front.
-                itemList.error = "syntax error";
-            }
-            else if (items[0].type > ItemType.NUMBER)
-            {
-                // If it's plus or minus, just add a zero in front.
-                items.Insert(0, new Item(0.0));
-            }
-
-            // Third, let's look for scenarios like "2 * - 3", and turn them into "2 * -3", by removing the minus and making the number negative.
+            // Second, let's look for scenarios like "2 * - 3", and turn them into "2 * -3", by removing the minus and making the number negative.
             while (true)
             {
                 bool cleaned = true;
@@ -280,7 +281,7 @@ namespace CalculatorWPF
                 if (cleaned) break;
             }
 
-            // Fourth, if at this point there are still consecutive operations left, it's a syntax error.
+            // Third, if at this point there are still consecutive operations left, it's a syntax error.
             // Not doing the last item in the list because we're already comparing it on the previous one.
             for (int i = 0; i < items.Count - 2; i++)
             {
@@ -293,7 +294,7 @@ namespace CalculatorWPF
                 }
             }
 
-            // Fifth, interpret two numbers in a row as multiplication.
+            // Fourth, interpret two numbers in a row as multiplication.
             while (true)
             {
                 bool cleaned = true;
@@ -317,11 +318,28 @@ namespace CalculatorWPF
                 if (cleaned) break;
             }
 
+            // Fifth, let's make sure an operation at the start isn't going to break the whole thing.
+            if (items[0].type > ItemType.ADD)
+            {
+                // You can't put one of these operators with nothing in front.
+                itemList.error = "syntax error";
+            }
+            else if (items[0].type > ItemType.NUMBER)
+            {
+                // If it's plus or minus, just add a zero in front.
+                items.Insert(0, new Item(0.0));
+            }
+
+            // Sixth, let's make sure an operation at the end isn't going to break the whole thing either.
+            var lastType = items[items.Count - 2].type;
+            if (lastType > ItemType.NUMBER && lastType < ItemType.CLOSING_BRACKET)
+            {
+                // You can't put an operator with nothing after.
+                itemList.error = "syntax error";
+            }
+
             // Remove the padding item again.
             items.RemoveAt(items.Count - 1);
-
-            // Cleaned up successfully.
-            itemList.error = "success";
         }
 
         // Turn the equasion into smaller ones for the sets of brackets and solve them.

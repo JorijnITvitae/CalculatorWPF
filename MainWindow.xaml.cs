@@ -25,17 +25,15 @@ namespace CalculatorWPF
             calculator = new Calculator();
         }
 
-        private void Button_Item_Click(object sender, RoutedEventArgs e)
-        {
-            var button = (Button)(sender);
-            var content = button.Content;
-            TextBox_Input.Text += content.ToString();
-        }
-
         private void Button_Clear_Click(object sender, RoutedEventArgs e)
         {
             TextBox_Input.Clear();
             TextBox_Output.Clear();
+        }
+
+        private void UpdateAnswer()
+        {
+            TextBox_Answer.Text = calculator.Answer.ToString();
         }
 
         private void Solve()
@@ -45,12 +43,21 @@ namespace CalculatorWPF
 
         private void Button_Equals_Click(object sender, RoutedEventArgs e)
         {
-            Solve();
+            UpdateAnswer();
         }
 
         private void TextBox_Input_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) Solve();
+            if (e.Key != Key.Enter) Solve();
+            else UpdateAnswer();
+        }
+
+        private void Button_Item_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)(sender);
+            var content = button.Content;
+            TextBox_Input.Text += content.ToString();
+            Solve();
         }
     }
 }
