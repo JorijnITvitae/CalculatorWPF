@@ -6,17 +6,48 @@ namespace CalculatorWPF
 {
     class Calculator
     {
+        private double result;
         private double answer;
         private double memory;
 
         public double Answer
         {
-            get => answer;
+            get
+            {
+                // Only update the answer when it is requested.
+                answer = result;
+                return answer;
+            }
         }
 
         public double Memory
         {
             get => memory;
+        }
+
+        public void MemoryAdd()
+        {
+            memory += result;
+        }
+
+        public void MemorySubtract()
+        {
+            memory -= result;
+        }
+
+        public void ClearResult()
+        {
+            result = 0.0;
+        }
+
+        public void ClearAnswer()
+        {
+            answer = 0.0;
+        }
+
+        public void ClearMemory()
+        {
+            memory = 0.0;
         }
 
         private enum ItemType
@@ -111,8 +142,9 @@ namespace CalculatorWPF
 
         public Calculator()
         {
-            answer = 0;
-            memory = 0;
+            result = 0.0;
+            answer = 0.0;
+            memory = 0.0;
         }
 
         private void Compute(ItemList itemList)
@@ -124,7 +156,7 @@ namespace CalculatorWPF
             while (items.Count > 1)
             {
                 // Temporary variable to store the highest in the math hierarchy we've found.
-                // 0 = number, answer; 1 = add, subtract; 2 = multiply, divide; 3 = power, root.
+                // 0 = number; 1 = add, subtract; 2 = multiply, divide; 3 = power, root.
                 int highestHierarchy = -1;
 
                 // Temporary variable to store the position of the action to be executed in the list.
@@ -372,6 +404,13 @@ namespace CalculatorWPF
                     }
                 }
 
+                // A pair of brackets with nothing in between is a syntax error.
+                if (closing == opening + 1)
+                {
+                    itemList.error = "syntax error";
+                    return; // Exit because there was an error.
+                }
+
                 // A pair of brackets was found.
                 if (opening >= 0 && closing >= 0)
                 {
@@ -397,7 +436,7 @@ namespace CalculatorWPF
 
                     // Finally remove the solved items and brackets.
                     items.RemoveRange(opening, closing - opening + 1);
-                    // And insert the answer in its place.
+                    // And insert the result in its place.
                     items.Insert(opening, tempList.items[0]);
                 }
                 
@@ -431,15 +470,15 @@ namespace CalculatorWPF
         {
             ItemList itemList = new ItemList(); // Contains the list of items and the error type.
             List<Item> items = itemList.items; // A reference to the list of items itself.
-            input += ' '; // Empty character at the end so things that rely on the next run of the loop will work.
-            string numberString = ""; // Temporary string to store numbers in before adding them to the items list.
 
+            input += ' '; // Padding character at the end so things that rely on the next run of the loop will work.
+            string numberString = ""; // Temporary string to store numbers in before adding them to the items list.
             foreach (char c in input)
             {
                 // If this character is part of a number, add it to the string.
                 if (Char.IsDigit(c) || c == '.' || c == ',')
                 {
-                    // double.Parse() doesn't treat comma's as dot's, so replace them.
+                    // Double.Parse() doesn't treat commas as dots, so replace them.
                     if (c == ',')
                     {
                         numberString += '.';
@@ -521,13 +560,12 @@ namespace CalculatorWPF
                 }
             }
 
-            // If the list is empty, assume it's a syntax error.
-            if (items.Count < 1)
-                itemList.error = "syntax error";
-            else
+            if (items.Count < 1) // If the list is empty, assume it's a syntax error.
+                itemList.error = "syntax error"; 
+            else // Otherwise, everything went well.
                 itemList.error = "success";
 
-            // Interpreted successfully.
+            // Done interpreting.
             return itemList;
         }
 
@@ -551,9 +589,12 @@ namespace CalculatorWPF
                 return itemList.error;
             }
 
-            // Return the answer.
-            answer = itemList.items[0].number;
-            return answer.ToString();
+            // Not doing this because it messes with very small numbers.
+            // result = Math.Round(itemList.items[0].number, 9, MidpointRounding.AwayFromZero);
+
+            // Return the result.
+            result = itemList.items[0].number;
+            return result.ToString();
         }
     }
 }

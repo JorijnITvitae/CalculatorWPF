@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CalculatorWPF"
         mc:Ignorable="d"
         Width="250" MinWidth="300" MaxWidth="600"
-        Height="406" MinHeight="406" MaxHeight="406"
+        Height="450" MinHeight="450" MaxHeight="450"
         Title="Calculator">
 
     <Border Padding="8" Background="#3f3f3f">
@@ -25,7 +25,7 @@
 
             <TextBox x:Name="TextBox_Output" Margin="0 4 0 4" IsReadOnly="True" FontSize="24" Padding="2" Background="#2f2f2f" Foreground="#efefef" />
 
-            <TextBox x:Name="TextBox_Input" Margin="0 4 0 4" FontSize="24" Padding="2" Background="#1f1f1f" Foreground="#dfdfdf" KeyDown="TextBox_Input_KeyDown" />
+            <TextBox x:Name="TextBox_Input" Margin="0 4 0 4" FontSize="24" Padding="2" Background="#1f1f1f" Foreground="#dfdfdf" KeyDown="TextBox_Input_KeyDown" TextChanged="TextBox_Input_TextChanged" />
 
             <Grid Margin="-4 0 -4 0">
 
@@ -43,41 +43,48 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Button x:Name="Button_Number0" Content="0" Grid.Column="2" Grid.Row="4" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number1" Content="1" Grid.Column="1" Grid.Row="3" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number2" Content="2" Grid.Column="2" Grid.Row="3" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number3" Content="3" Grid.Column="3" Grid.Row="3" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number4" Content="4" Grid.Column="1" Grid.Row="2" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number5" Content="5" Grid.Column="2" Grid.Row="2" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number6" Content="6" Grid.Column="3" Grid.Row="2" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number7" Content="7" Grid.Column="1" Grid.Row="1" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number8" Content="8" Grid.Column="2" Grid.Row="1" Click="Button_Item_Click" />
-                <Button x:Name="Button_Number9" Content="9" Grid.Column="3" Grid.Row="1" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number0" Content="0" Grid.Column="2" Grid.Row="5" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number1" Content="1" Grid.Column="1" Grid.Row="4" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number2" Content="2" Grid.Column="2" Grid.Row="4" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number3" Content="3" Grid.Column="3" Grid.Row="4" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number4" Content="4" Grid.Column="1" Grid.Row="3" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number5" Content="5" Grid.Column="2" Grid.Row="3" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number6" Content="6" Grid.Column="3" Grid.Row="3" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number7" Content="7" Grid.Column="1" Grid.Row="2" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number8" Content="8" Grid.Column="2" Grid.Row="2" Click="Button_Item_Click" />
+                <Button x:Name="Button_Number9" Content="9" Grid.Column="3" Grid.Row="2" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_OpeningBracket" Content="(" Grid.Column="0" Grid.Row="4" Click="Button_Item_Click" />
-                <Button x:Name="Button_ClosingBracket" Content=")" Grid.Column="1" Grid.Row="4" Click="Button_Item_Click" />
+                <Button x:Name="Button_OpeningBracket" Content="(" Grid.Column="0" Grid.Row="5" Click="Button_Item_Click" />
+                <Button x:Name="Button_ClosingBracket" Content=")" Grid.Column="1" Grid.Row="5" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_Dot" Content="." Grid.Column="3" Grid.Row="4" Click="Button_Item_Click" />
-                <Button x:Name="Button_Equals" Content="=" Grid.Column="4" Grid.Row="4" Click="Button_Equals_Click" />
+                <Button x:Name="Button_Dot" Content="." Grid.Column="3" Grid.Row="5" Click="Button_Item_Click" />
+                <Button x:Name="Button_Equals" Content="=" Grid.Column="4" Grid.Row="5" Click="Button_Equals_Click" />
 
-                <Button x:Name="Button_Plus" Content="+" Grid.Column="4" Grid.Row="3" Click="Button_Item_Click" />
-                <Button x:Name="Button_Minus" Content="-" Grid.Column="0" Grid.Row="3" Click="Button_Item_Click" />
+                <Button x:Name="Button_Plus" Content="+" Grid.Column="4" Grid.Row="4" Click="Button_Item_Click" />
+                <Button x:Name="Button_Minus" Content="-" Grid.Column="0" Grid.Row="4" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_Multiply" Content="*" Grid.Column="4" Grid.Row="2" Click="Button_Item_Click" />
-                <Button x:Name="Button_Divide" Content="/" Grid.Column="0" Grid.Row="2" Click="Button_Item_Click" />
+                <Button x:Name="Button_Multiply" Content="*" Grid.Column="4" Grid.Row="3" Click="Button_Item_Click" />
+                <Button x:Name="Button_Divide" Content="/" Grid.Column="0" Grid.Row="3" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_Power" Content="^" Grid.Column="4" Grid.Row="1" Click="Button_Item_Click" />
-                <Button x:Name="Button_Root" Content="v" Grid.Column="0" Grid.Row="1" Click="Button_Item_Click" />
+                <Button x:Name="Button_Power" Content="^" ToolTip="x^y" Grid.Column="4" Grid.Row="2" Click="Button_Item_Click" />
+                <Button x:Name="Button_Root" Content="v" ToolTip="x√y" Grid.Column="0" Grid.Row="2" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_Answer" Content="a" Grid.Column="0" Grid.Row="0" Click="Button_Item_Click" />
-                <Button x:Name="Button_Memory" Content="m" Grid.Column="1" Grid.Row="0" Click="Button_Item_Click" />
+                <Button x:Name="Button_Power2" Content="^2" ToolTip="x^2" Grid.Column="4" Grid.Row="1" Click="Button_Item_Click" />
+                <Button x:Name="Button_Root2" Content="2v" ToolTip="2√y" Grid.Column="0" Grid.Row="1" Click="Button_Item_Click" />
 
-                <Button x:Name="Button_MemoryPlus" Content="m+" Grid.Column="2" Grid.Row="0" />
-                <Button x:Name="Button_MemoryMinus" Content="m-" Grid.Column="3" Grid.Row="0" />
-                <Button x:Name="Button_Clear" Content="c" Grid.Column="4" Grid.Row="0" Click="Button_Clear_Click" />
+                <Button x:Name="Button_Memory" Content="m" ToolTip="Memory recall" Grid.Column="1" Grid.Row="1" Click="Button_Item_Click" />
+                <Button x:Name="Button_Answer" Content="a" Grid.Column="3" Grid.Row="1" Click="Button_Item_Click" />
 
+                <Button x:Name="Button_MemoryMinus" Content="m-" ToolTip="Subtract from value in memory" Grid.Column="1" Grid.Row="0" Click="Button_MemoryMinus_Click" />
+                <Button x:Name="Button_MemoryClear" Content="mc" ToolTip="Clear the value in memory" Grid.Column="2" Grid.Row="0" Click="Button_MemoryClear_Click" />
+                <Button x:Name="Button_MemoryPlus" Content="m+" ToolTip="Add to value in memory" Grid.Column="3" Grid.Row="0" Click="Button_MemoryPlus_Click" />
+
+                <Button x:Name="Button_Clear" Content="c" ToolTip="Clean input and output screens"  Grid.Column="0" Grid.Row="0" Click="Button_Clear_Click" />
+                <Button x:Name="Button_AllClear" Content="ac" ToolTip="Clear screens and answer"  Grid.Column="5" Grid.Row="0" Click="Button_AllClear_Click" />
+                <Button x:Name="Button_Backspace" Content="←" ToolTip="Remove symbol before the caret"  Grid.Column="2" Grid.Row="1" Click="Button_Backspace_Click" />
             </Grid>
 
         </StackPanel>
